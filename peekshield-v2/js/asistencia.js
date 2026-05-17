@@ -11,7 +11,19 @@ async function cargarEstudiantes() {
 }
 
 async function iniciarCamaraAsistencia() {
+  // Siempre recargar estudiantes al entrar
   await cargarEstudiantes();
+  asistenciaBlockeada = false;
+  clearInterval(detectandoInterval);
+
+  if (streamAsistencia) {
+    // Camara ya activa, solo reiniciar deteccion
+    document.getElementById('statusAsistencia').textContent = 'Acercate a la camara...';
+    document.getElementById('btnSiguienteWrap').style.display = 'none';
+    iniciarDeteccion();
+    return;
+  }
+
   try {
     streamAsistencia = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
     document.getElementById('video').srcObject = streamAsistencia;

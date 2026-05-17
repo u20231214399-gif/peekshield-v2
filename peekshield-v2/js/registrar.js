@@ -21,27 +21,40 @@ function capturarFotoRegistro() {
   canvas.getContext('2d').drawImage(video, 0, 0);
   canvas.dataset.vacio = 'false';
   canvas.style.display = 'block';
-  document.getElementById('statusRegistrar').textContent = 'Foto capturada — escribe el nombre y registra';
+  document.getElementById('statusRegistrar').textContent = 'Foto capturada — completa los datos y registra';
 }
 
 async function registrarEstudiante() {
   const nombre = document.getElementById('inputNombre').value.trim();
+  const codigo = document.getElementById('inputCodigo').value.trim();
   const status = document.getElementById('statusRegistrar');
-  if (!nombre) { status.textContent = 'Escribe un nombre'; return; }
+
+  if (!nombre) { status.textContent = 'Escribe el nombre del estudiante'; return; }
+  if (!codigo) { status.textContent = 'Escribe el codigo estudiantil'; return; }
+
   const canvas = document.getElementById('canvasRegistro');
   if (!canvas || canvas.dataset.vacio === 'true') { status.textContent = 'Primero captura la foto'; return; }
+
   status.textContent = 'Analizando cara...';
   try {
     const detection = await faceapi
       .detectSingleFace(canvas, new faceapi.TinyFaceDetectorOptions())
       .withFaceLandmarks()
       .withFaceDescriptor();
-    if (!detection) { status.textContent = 'No se detecto cara — acercate mas y buena luz'; return; }
+
+    if (!detection) { status.textContent = 'No se detecto cara — acercate mas con buena iluminacion'; return; }
+
     const descriptor = Array.from(detection.descriptor);
     const foto = canvas.toDataURL('image/jpeg', 0.5).split(',')[1];
-    await db.collection('estudiantes').add({ nombre, descriptor, foto, fechaRegistro: firebase.firestore.Timestamp.now() });
+
+    await db.collection('estudiantes').add({
+      nombre, codigo, descriptor, foto,
+      fechaRegistro: firebase.firestore.Timestamp.now()
+    });
+
     status.textContent = nombre + ' registrado correctamente';
     document.getElementById('inputNombre').value = '';
+    document.getElementById('inputCodigo').value = '';
     canvas.dataset.vacio = 'true';
     canvas.style.display = 'none';
   } catch(e) {
@@ -51,4 +64,5 @@ async function registrarEstudiante() {
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('inputNombre').addEventListener('keydown', e => { if (e.key === 'Enter') registrarEstudiante(); });
+  document.getElementById('inputCodigo').addEventListener('keydown', e => { if (e.key === 'Enter') registrarEstudiante(); });
 });

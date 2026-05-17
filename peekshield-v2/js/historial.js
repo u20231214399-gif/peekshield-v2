@@ -22,6 +22,7 @@ async function cargarHistorial() {
       <img src="data:image/jpeg;base64,${r.foto||''}" onerror="this.src=''" onclick="verFoto('${r.foto||''}')"/>
       <div class="card-info">
         <div class="card-nombre">${r.nombre||'Sin nombre'}</div>
+        ${r.codigo ? `<div class="card-codigo">Cod: ${r.codigo}</div>` : ''}
         <div class="card-fecha">📅 ${fecha?fecha.toLocaleDateString('es-CO'):''}</div>
         <div class="card-hora">🕐 ${fecha?fecha.toLocaleTimeString('es-CO'):''}</div>
       </div>
@@ -46,7 +47,12 @@ function exportarExcel() {
   if (registrosActuales.length === 0) { alert('No hay registros para exportar.'); return; }
   const datos = registrosActuales.map(r => {
     const fecha = r.fecha?.toDate();
-    return { 'Nombre': r.nombre||'', 'Fecha': fecha?fecha.toLocaleDateString('es-CO'):'', 'Hora': fecha?fecha.toLocaleTimeString('es-CO'):'' };
+    return {
+      'Nombre': r.nombre||'',
+      'Codigo Estudiantil': r.codigo||'',
+      'Fecha': fecha?fecha.toLocaleDateString('es-CO'):'',
+      'Hora': fecha?fecha.toLocaleTimeString('es-CO'):''
+    };
   });
   const ws = XLSX.utils.json_to_sheet(datos);
   const wb = XLSX.utils.book_new();

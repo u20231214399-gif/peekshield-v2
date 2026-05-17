@@ -1,0 +1,36 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: #0F0F1A; color: #fff; min-height: 100vh; }
+header { background: #1A1A2E; padding: 16px 24px; border-bottom: 2px solid #6C63FF; }
+header h1 { font-size: 20px; color: #6C63FF; }
+nav { display: flex; gap: 8px; padding: 16px 24px; border-bottom: 1px solid #222; flex-wrap: wrap; }
+nav button { padding: 8px 18px; border: none; border-radius: 8px; background: #1A1A2E; color: #aaa; cursor: pointer; font-size: 14px; }
+nav button.active { background: #6C63FF; color: #fff; }
+.page { display: none; padding: 24px; max-width: 700px; margin: 0 auto; }
+.page.active { display: block; }
+h2 { font-size: 22px; margin-bottom: 20px; }
+input[type="text"] { width: 100%; padding: 14px 16px; background: #1A1A2E; border: 1px solid #333; border-radius: 10px; color: #fff; font-size: 16px; margin-bottom: 12px; }
+input[type="text"]::placeholder { color: #666; }
+.btn { width: 100%; padding: 14px; border: none; border-radius: 10px; background: #6C63FF; color: #fff; font-size: 16px; cursor: pointer; margin-bottom: 8px; }
+.btn.secondary { background: #333355; }
+.status { margin-top: 14px; font-size: 15px; color: #00C896; text-align: center; min-height: 24px; }
+#videoRegistro { width: 100%; max-width: 360px; display: block; border-radius: 12px; margin: 0 auto 12px; transform: scaleX(-1); background: #000; }
+#canvasRegistro { display: none; width: 100%; max-width: 360px; border-radius: 12px; margin: 0 auto 12px; border: 2px solid #6C63FF; }
+#videoContainer { position: relative; width: 100%; max-width: 400px; margin: 0 auto 16px; border-radius: 16px; overflow: hidden; background: #000; }
+#video { width: 100%; display: block; transform: scaleX(-1); }
+#faceOverlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 180px; height: 220px; border: 3px solid #6C63FF; border-radius: 50%; pointer-events: none; }
+.filtros { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+input[type="date"] { padding: 10px 14px; background: #1A1A2E; border: 1px solid #333; border-radius: 10px; color: #fff; font-size: 14px; }
+.btnSmall { padding: 10px 16px; border: none; border-radius: 10px; background: #6C63FF; color: #fff; font-size: 14px; cursor: pointer; }
+.btnSmall.green { background: #00A67E; }
+.card { background: #1A1A2E; border-radius: 12px; padding: 14px; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; }
+.card img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid #6C63FF; cursor: pointer; flex-shrink: 0; }
+.card-info { flex: 1; }
+.card-nombre { font-size: 16px; font-weight: bold; }
+.card-fecha { font-size: 13px; color: #aaa; margin-top: 3px; }
+.card-hora { font-size: 13px; color: #00C896; margin-top: 2px; }
+.btnDel { background: none; border: none; color: #e53935; font-size: 20px; cursor: pointer; }
+.empty { color: #666; text-align: center; margin-top: 40px; font-size: 15px; }
+#modalFoto { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 999; align-items: center; justify-content: center; }
+#modalFoto.visible { display: flex; }
+#modalFoto img { max-width: 90vw; max-height: 90vh; border-radius: 12px; }
+#loadingModels { text-align: center; padding: 30px; color: #6C63FF; font-size: 16px; }

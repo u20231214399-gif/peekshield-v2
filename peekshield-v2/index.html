@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PeekShield</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+  <script src="js/firebase.js"></script>
+</head>
+<body>
+
+<header><h1>PeekShield</h1></header>
+
+<nav>
+  <button class="active" onclick="showPage('registrar',this)">Registrar</button>
+  <button onclick="showPage('asistencia',this)">Asistencia</button>
+  <button onclick="showPage('historial',this)">Historial</button>
+</nav>
+
+<div id="loadingModels">Cargando modelos de reconocimiento facial...</div>
+
+<div id="page-registrar" class="page active">
+  <h2>Registrar Estudiante</h2>
+  <video id="videoRegistro" autoplay playsinline muted></video>
+  <canvas id="canvasRegistro" data-vacio="true"></canvas>
+  <button class="btn secondary" onclick="capturarFotoRegistro()">Capturar foto</button>
+  <input type="text" id="inputNombre" placeholder="Nombre completo del estudiante"/>
+  <button class="btn" onclick="registrarEstudiante()">Registrar</button>
+  <div class="status" id="statusRegistrar"></div>
+</div>
+
+<div id="page-asistencia" class="page">
+  <h2>Tomar Asistencia</h2>
+  <div id="videoContainer">
+    <video id="video" autoplay playsinline muted></video>
+    <div id="faceOverlay"></div>
+  </div>
+  <div class="status" id="statusAsistencia">Acercate a la camara...</div>
+  <div style="margin-top:16px;display:none" id="btnSiguienteWrap">
+    <button class="btn" onclick="siguienteEstudiante()">Siguiente estudiante</button>
+  </div>
+</div>
+
+<div id="page-historial" class="page">
+  <h2>Historial de Asistencia</h2>
+  <div class="filtros">
+    <input type="date" id="filtroFecha"/>
+    <button class="btnSmall" onclick="cargarHistorial()">Filtrar</button>
+    <button class="btnSmall green" onclick="exportarExcel()">Excel</button>
+  </div>
+  <div id="listaHistorial"></div>
+</div>
+
+<div id="modalFoto" onclick="this.classList.remove('visible')">
+  <img id="modalImg" src=""/>
+</div>
+
+<script src="js/app.js"></script>
+<script src="js/registrar.js"></script>
+<script src="js/asistencia.js"></script>
+<script src="js/historial.js"></script>
+<script>
+const MODEL_URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model';
+Promise.all([
+  faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+  faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+  faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL)
+]).then(() => {
+  document.getElementById('loadingModels').style.display = 'none';
+  iniciarCamaraRegistro();
+}).catch(e => {
+  document.getElementById('loadingModels').textContent = 'Error cargando modelos: ' + e.message;
+});
+</script>
+</body>
+</html>

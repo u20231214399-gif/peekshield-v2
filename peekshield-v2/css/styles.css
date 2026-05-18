@@ -17,10 +17,10 @@ header {
 }
 
 header img {
-  height: 70px;
+  height: 90px;
   background: white;
   border-radius: 8px;
-  padding: 4px 8px;
+  padding: 6px 10px;
 }
 
 header .header-text h1 {
